@@ -1,6 +1,6 @@
 ﻿'--------------------------------------------------------------------------------------------------
 ' AutoLogon
-'    (c) 2026 Remus Rigo
+'    © 2026 Remus Rigo
 '       v1.1 2026-03-30
 '--------------------------------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ Public Class frmAutoLogon
       End If
 
       If RegValueExists(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName") Then
-         txtBoxUser.Text = RegReadStr(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName")
+         txtBoxUser.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName")
       Else
          txtBoxUser.Text = Environment.UserName
       End If
@@ -131,7 +131,7 @@ Public Class frmAutoLogon
       txtBoxPass.Text = RetrieveLsaPassword()
 
       If RegValueExists(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName") Then
-         txtBoxDomain.Text = RegReadStr(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName")
+         txtBoxDomain.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName")
       End If
    End Sub
 
@@ -161,10 +161,10 @@ Public Class frmAutoLogon
          txtBoxDomain.Text = "MicrosoftAccount"
          ' use password, not PIN
          If RegValueExists(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless") Then
-            RegWriteInt(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless", 0)
+            RegWriteDWord(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless", 0)
          End If
          If RegValueExists(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion") Then
-            RegWriteInt(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion", 0)
+            RegWriteDWord(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion", 0)
          End If
       End If
    End Sub
@@ -176,9 +176,9 @@ Public Class frmAutoLogon
    End Sub
 
    Private Sub btnRead_Click(sender As Object, e As EventArgs) Handles btnRead.Click
-      txtBoxUser.Text = RegReadStr(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName")
+      txtBoxUser.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName")
       txtBoxPass.Text = RetrieveLsaPassword()
-      txtBoxDomain.Text = RegReadStr(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName")
+      txtBoxDomain.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName")
    End Sub
 
    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -194,11 +194,11 @@ Public Class frmAutoLogon
    Private Sub btnSet_Click(sender As Object, e As EventArgs) Handles btnSet.Click
       btnDelete_Click(sender, e) ' Clear existing values first
 
-      RegWriteStr(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName", txtBoxUser.Text)
+      RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName", txtBoxUser.Text)
       If rBtnLocal.Checked Then
-         RegWriteStr(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", "")
+         RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", "")
       Else
-         RegWriteStr(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", txtBoxDomain.Text)
+         RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", txtBoxDomain.Text)
       End If
       StoreLsaPassword(txtBoxPass.Text)
       ToolStripStatusLabel.Text = "Configuration set"

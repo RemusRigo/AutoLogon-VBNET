@@ -1,6 +1,12 @@
-﻿Imports System.Runtime.InteropServices
+﻿'--------------------------------------------------------------------------------------------------
+' AutoLogon
+'    (c) 2026 Remus Rigo
+'       v1.1 2026-03-27
+'--------------------------------------------------------------------------------------------------
 
-Module dllAdvAPI32
+Imports System.Runtime.InteropServices
+
+Module AdvAPI32
 
    Friend Const POLICY_ALL_ACCESS As UInteger = &HF0FFF
 

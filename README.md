@@ -26,21 +26,14 @@ You must install .NET Runtime 10 x64 and then just run AutoLogon.exe
 
 ## Roadmap
 
-2026-03-30: Add: click on Password label to show/hide password
-
-2026-03-30: Added manifest file / always run as administrator
-
-2026-03-30: Added About dialog box
-
-2026-03-30: Changed interface
-
-2026-03-28: Tested autologin for Microsoft Accounts
-
-2026-03-28: Tested autologin for local users
-
-2026-03-26: ICO: easypass by Papirus Development Team https://icon-icons.com/icon/easypass/94927
-
-2026-03-25: Project started
+* 2026-03-30: Add: click on Password label to show/hide password
+* 2026-03-30: Added manifest file / always run as administrator
+* 2026-03-30: Added About dialog box
+* 2026-03-30: Changed interface
+* 2026-03-28: Tested autologin for Microsoft Accounts
+* 2026-03-28: Tested autologin for local users
+* 2026-03-26: ICO: easypass by Papirus Development Team https://icon-icons.com/icon/easypass/94927
+* 2026-03-25: Project started
 
 ## 
 

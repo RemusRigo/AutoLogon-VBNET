@@ -11,6 +11,12 @@
       <MyType>WindowsForms</MyType>
   </PropertyGroup>
 
+   <ItemGroup>
+     <None Remove="Update.bat" />
+     <None Remove="Upload.bat" />
+     <None Remove="Upload.ps1" />
+   </ItemGroup>
+
   <ItemGroup>
     <Content Include="Res\com_94927.ico" />
   </ItemGroup>

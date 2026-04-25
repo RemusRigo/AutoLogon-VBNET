@@ -1,49 +1,28 @@
 ﻿'--------------------------------------------------------------------------------------------------
 ' libReg - Registry functions
 '    (c) 2026 Remus Rigo
-'       v1.0 2026-03-27
+'       v1.0 2026-04-25
+'
+' add Imports Microsoft.Win32
 '--------------------------------------------------------------------------------------------------
-
 
 Imports Microsoft.Win32
 
 Public Module libReg
 
 	'-----------------------------------------------------------------------------------------------
-	' Check if Value exists
-
-	Public Function RegValueExists(root As RegistryKey, path As String, valueName As String) As Boolean
-		Using key As RegistryKey = root.OpenSubKey(path, writable:=False)
-			If key Is Nothing Then Return False ' Key does not exist
-			Dim names() As String = key.GetValueNames()
-			Return names.Contains(valueName)
-		End Using
-	End Function
-
-	'-----------------------------------------------------------------------------------------------
-	' Delete Value
-	Public Function RegDeleteValue(root As RegistryKey, path As String, valueName As String) As Boolean
-		Try
-			Using key As RegistryKey = root.CreateSubKey(path, True)
-				key.DeleteValue(valueName)
-			End Using
-			Return True
-		Catch ex As Exception
-			Return False
-		End Try
-	End Function
-
-	'-----------------------------------------------------------------------------------------------
-	' Read/Write Boolean
-
+	' Read Boolean
 	Public Function RegReadBool(root As RegistryKey, path As String, name As String) As Boolean
 		Using key As RegistryKey = root.OpenSubKey(path, False)
 			If key Is Nothing Then Return False
-			Dim val = key.GetValue(name, "0")?.ToString()
-			Return val = "1"
+			Dim val = key.GetValue(name, Nothing)
+			If val Is Nothing Then Return False
+			Return val.ToString() = "1"
 		End Using
 	End Function
 
+	'-----------------------------------------------------------------------------------------------
+	' Write Boolean
 	Public Function RegWriteBool(root As RegistryKey, path As String, name As String, value As Boolean) As Boolean
 		Try
 			Using key As RegistryKey = root.CreateSubKey(path, True)
@@ -56,8 +35,8 @@ Public Module libReg
 	End Function
 
 	'-----------------------------------------------------------------------------------------------
-	' Read/Write REG_DWORD
-	Public Function RegReadInt(root As RegistryKey, path As String, name As String) As Integer
+	' Read DWord | Integer
+	Public Function RegReadDWord(root As RegistryKey, path As String, name As String) As Integer
 		Dim r As Integer = -1
 		Using key As RegistryKey = root.OpenSubKey(path, False)
 			If key IsNot Nothing Then
@@ -67,7 +46,9 @@ Public Module libReg
 		Return r
 	End Function
 
-	Public Function RegWriteInt(root As RegistryKey, path As String, name As String, value As Integer) As Boolean
+	'-----------------------------------------------------------------------------------------------
+	' Write DWord | Integer
+	Public Function RegWriteDWord(root As RegistryKey, path As String, name As String, value As Integer) As Boolean
 		Try
 			Using key As RegistryKey = root.CreateSubKey(path, True)
 				key.SetValue(name, value, RegistryValueKind.DWord)
@@ -79,17 +60,27 @@ Public Module libReg
 	End Function
 
 	'-----------------------------------------------------------------------------------------------
-	' Read/Write REG_SZ / String
-	Public Function RegReadStr(root As RegistryKey, path As String, name As String) As String
-		Using key As RegistryKey = root.OpenSubKey(path, False)
-			If key Is Nothing Then Return ""
-			Dim val = key.GetValue(name, Nothing)
-			If val Is Nothing Then Return ""
-			Return val.ToString()
+	' Read SZ | String
+	Public Function RegReadSZ(root As RegistryKey, path As String, name As String) As String
+		Using key As RegistryKey = root.OpenSubKey(path, writable:=False)
+			If key Is Nothing Then
+				Return Nothing
+			End If
+
+			Dim kind As RegistryValueKind = key.GetValueKind(name)
+
+			If kind = RegistryValueKind.String Then
+				Return CStr(key.GetValue(name, Nothing))
+			Else
+				' Optional: handle unexpected types
+				Return Nothing
+			End If
 		End Using
 	End Function
 
-	Public Function RegWriteStr(root As RegistryKey, path As String, name As String, value As String) As Boolean
+	'-----------------------------------------------------------------------------------------------
+	' Write SZ | String
+	Public Function RegWriteSZ(root As RegistryKey, path As String, name As String, value As String) As Boolean
 		Try
 			Using key As RegistryKey = root.CreateSubKey(path, True)
 				key.SetValue(name, value, RegistryValueKind.String)
@@ -99,4 +90,29 @@ Public Module libReg
 			Return False
 		End Try
 	End Function
+
+	'-----------------------------------------------------------------------------------------------
+	' Check if value exist
+	Public Function RegValueExists(root As RegistryKey, path As String, valueName As String) As Boolean
+		Using key As RegistryKey = root.OpenSubKey(path, writable:=False)
+			If key Is Nothing Then Return False ' Key does not exist
+			Dim names() As String = key.GetValueNames()
+			Return names.Contains(valueName)
+		End Using
+	End Function
+
+   '-----------------------------------------------------------------------------------------------
+   ' Delete value
+   Public Function RegDeleteValue(root As RegistryKey, path As String, name As String) As Boolean
+      Try
+         Using key As RegistryKey = root.OpenSubKey(path, True)
+            If key Is Nothing Then Return False ' Key does not exist
+            key.DeleteValue(name, False) ' False to avoid exception if value does not exist
+         End Using
+         Return True
+      Catch ex As Exception
+         Return False
+      End Try
+   End Function
+
 End Module
