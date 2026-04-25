@@ -25,9 +25,6 @@ Partial Class frmAutoLogon
       Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAutoLogon))
       StatusStrip = New StatusStrip()
       ToolStripStatusLabel = New ToolStripStatusLabel()
-      grpBoxAutoLogon = New GroupBox()
-      rBtnDisabled = New RadioButton()
-      rBtnEnabled = New RadioButton()
       grpBoxAutoLoginSettings = New GroupBox()
       grpBoxAutoLoginType = New GroupBox()
       rBtnDomain = New RadioButton()
@@ -42,8 +39,8 @@ Partial Class frmAutoLogon
       lblPassword = New Label()
       txtBoxUser = New TextBox()
       lblUser = New Label()
+      chkBoxAutologon = New CheckBox()
       StatusStrip.SuspendLayout()
-      grpBoxAutoLogon.SuspendLayout()
       grpBoxAutoLoginSettings.SuspendLayout()
       grpBoxAutoLoginType.SuspendLayout()
       SuspendLayout()
@@ -51,7 +48,7 @@ Partial Class frmAutoLogon
       ' StatusStrip
       ' 
       StatusStrip.Items.AddRange(New ToolStripItem() {ToolStripStatusLabel})
-      StatusStrip.Location = New Point(0, 264)
+      StatusStrip.Location = New Point(0, 239)
       StatusStrip.Name = "StatusStrip"
       StatusStrip.Size = New Size(384, 22)
       StatusStrip.TabIndex = 11
@@ -62,43 +59,8 @@ Partial Class frmAutoLogon
       ToolStripStatusLabel.Name = "ToolStripStatusLabel"
       ToolStripStatusLabel.Size = New Size(0, 17)
       ' 
-      ' grpBoxAutoLogon
-      ' 
-      grpBoxAutoLogon.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
-      grpBoxAutoLogon.Controls.Add(rBtnDisabled)
-      grpBoxAutoLogon.Controls.Add(rBtnEnabled)
-      grpBoxAutoLogon.Location = New Point(3, 3)
-      grpBoxAutoLogon.Name = "grpBoxAutoLogon"
-      grpBoxAutoLogon.Size = New Size(377, 45)
-      grpBoxAutoLogon.TabIndex = 31
-      grpBoxAutoLogon.TabStop = False
-      grpBoxAutoLogon.Text = "AutoLogon"
-      ' 
-      ' rBtnDisabled
-      ' 
-      rBtnDisabled.AutoSize = True
-      rBtnDisabled.Location = New Point(80, 20)
-      rBtnDisabled.Name = "rBtnDisabled"
-      rBtnDisabled.Size = New Size(70, 19)
-      rBtnDisabled.TabIndex = 29
-      rBtnDisabled.TabStop = True
-      rBtnDisabled.Text = "Disabled"
-      rBtnDisabled.UseVisualStyleBackColor = True
-      ' 
-      ' rBtnEnabled
-      ' 
-      rBtnEnabled.AutoSize = True
-      rBtnEnabled.Location = New Point(5, 20)
-      rBtnEnabled.Name = "rBtnEnabled"
-      rBtnEnabled.Size = New Size(67, 19)
-      rBtnEnabled.TabIndex = 28
-      rBtnEnabled.TabStop = True
-      rBtnEnabled.Text = "Enabled"
-      rBtnEnabled.UseVisualStyleBackColor = True
-      ' 
       ' grpBoxAutoLoginSettings
       ' 
-      grpBoxAutoLoginSettings.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
       grpBoxAutoLoginSettings.Controls.Add(grpBoxAutoLoginType)
       grpBoxAutoLoginSettings.Controls.Add(btnSet)
       grpBoxAutoLoginSettings.Controls.Add(btnRead)
@@ -109,7 +71,7 @@ Partial Class frmAutoLogon
       grpBoxAutoLoginSettings.Controls.Add(lblPassword)
       grpBoxAutoLoginSettings.Controls.Add(txtBoxUser)
       grpBoxAutoLoginSettings.Controls.Add(lblUser)
-      grpBoxAutoLoginSettings.Location = New Point(3, 47)
+      grpBoxAutoLoginSettings.Location = New Point(3, 26)
       grpBoxAutoLoginSettings.Name = "grpBoxAutoLoginSettings"
       grpBoxAutoLoginSettings.Size = New Size(377, 210)
       grpBoxAutoLoginSettings.TabIndex = 32
@@ -244,22 +206,33 @@ Partial Class frmAutoLogon
       lblUser.TabIndex = 31
       lblUser.Text = "User Name:"
       ' 
+      ' chkBoxAutologon
+      ' 
+      chkBoxAutologon.AutoSize = True
+      chkBoxAutologon.Location = New Point(3, 3)
+      chkBoxAutologon.Name = "chkBoxAutologon"
+      chkBoxAutologon.Size = New Size(124, 19)
+      chkBoxAutologon.TabIndex = 33
+      chkBoxAutologon.Text = "Enable AutoLogon"
+      chkBoxAutologon.UseVisualStyleBackColor = True
+      ' 
       ' frmAutoLogon
       ' 
       AutoScaleDimensions = New SizeF(7F, 15F)
       AutoScaleMode = AutoScaleMode.Font
-      ClientSize = New Size(384, 286)
+      ClientSize = New Size(384, 261)
+      Controls.Add(chkBoxAutologon)
       Controls.Add(grpBoxAutoLoginSettings)
-      Controls.Add(grpBoxAutoLogon)
       Controls.Add(StatusStrip)
+      FormBorderStyle = FormBorderStyle.FixedSingle
       Icon = CType(resources.GetObject("$this.Icon"), Icon)
+      MaximizeBox = False
+      MinimizeBox = False
       Name = "frmAutoLogon"
       StartPosition = FormStartPosition.CenterScreen
       Text = "AutoLogon"
       StatusStrip.ResumeLayout(False)
       StatusStrip.PerformLayout()
-      grpBoxAutoLogon.ResumeLayout(False)
-      grpBoxAutoLogon.PerformLayout()
       grpBoxAutoLoginSettings.ResumeLayout(False)
       grpBoxAutoLoginSettings.PerformLayout()
       grpBoxAutoLoginType.ResumeLayout(False)
@@ -269,9 +242,6 @@ Partial Class frmAutoLogon
    End Sub
    Friend WithEvents StatusStrip As StatusStrip
    Friend WithEvents ToolStripStatusLabel As ToolStripStatusLabel
-   Friend WithEvents grpBoxAutoLogon As GroupBox
-   Friend WithEvents rBtnDisabled As RadioButton
-   Friend WithEvents rBtnEnabled As RadioButton
    Friend WithEvents grpBoxAutoLoginSettings As GroupBox
    Friend WithEvents grpBoxAutoLoginType As GroupBox
    Friend WithEvents btnSet As Button
@@ -286,5 +256,6 @@ Partial Class frmAutoLogon
    Friend WithEvents rBtnDomain As RadioButton
    Friend WithEvents rBtnMSAccount As RadioButton
    Friend WithEvents rBtnLocal As RadioButton
+   Friend WithEvents chkBoxAutologon As CheckBox
 
 End Class

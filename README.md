@@ -26,6 +26,7 @@ You must install .NET Runtime 10 x64 and then just run AutoLogon.exe
 
 ## Roadmap
 
+* 2026-04-25: Fix: logic in check if AutoLogon is enabled (also changed from RadioButton to CheckBox)
 * 2026-03-30: Add: click on Password label to show/hide password
 * 2026-03-30: Added manifest file / always run as administrator
 * 2026-03-30: Added About dialog box

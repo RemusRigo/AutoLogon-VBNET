@@ -94,11 +94,18 @@ Public Module libReg
 	'-----------------------------------------------------------------------------------------------
 	' Check if value exist
 	Public Function RegValueExists(root As RegistryKey, path As String, valueName As String) As Boolean
-		Using key As RegistryKey = root.OpenSubKey(path, writable:=False)
-			If key Is Nothing Then Return False ' Key does not exist
-			Dim names() As String = key.GetValueNames()
-			Return names.Contains(valueName)
-		End Using
+		Try
+			Using key As RegistryKey = root.OpenSubKey(path, False)
+				If key IsNot Nothing Then
+					' GetValue returns Nothing if the value name does not exist
+					Return key.GetValue(valueName) IsNot Nothing
+				End If
+			End Using
+		Catch ex As Exception
+			Console.WriteLine("Error accessing registry: " & ex.Message)
+		End Try
+
+		Return False
 	End Function
 
    '-----------------------------------------------------------------------------------------------
