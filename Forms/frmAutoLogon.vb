@@ -99,17 +99,10 @@ Public Class frmAutoLogon
    End Function
 
    Private Sub frmAutoLogon_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-      If Not IsAdministrator() Then
-         grpBoxAutoLoginSettings.Enabled = False
-         ToolStripStatusLabel.Text = "Must run as administrator to enable AutoLogon configuration"
-      Else
-         ToolStripStatusLabel.Text = "AutoLogon configuration is available"
-      End If
-
       'check if AutoLogon is enabled
       If RegValueExists(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon") Then
          'if exists, check if it's set to 1 (enabled) or 0 (disabled)
-         If RegReadDWord(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon") = 1 Then
+         If RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon") = "1" Then
             chkBoxAutologon.Checked = True
          Else
             chkBoxAutologon.Checked = False
@@ -153,12 +146,14 @@ Public Class frmAutoLogon
    End Sub
 
    Private Sub rBtnDomain_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnDomain.CheckedChanged
+
       If rBtnDomain.Checked Then
          txtBoxDomain.Text = Environment.UserDomainName
       End If
    End Sub
 
    Private Sub btnRead_Click(sender As Object, e As EventArgs) Handles btnRead.Click
+      ' read data from registry and LSA
       txtBoxUser.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName")
       txtBoxPass.Text = RetrieveLsaPassword()
       txtBoxDomain.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName")
@@ -175,8 +170,6 @@ Public Class frmAutoLogon
    End Sub
 
    Private Sub btnSet_Click(sender As Object, e As EventArgs) Handles btnSet.Click
-      btnDelete_Click(sender, e) ' Clear existing values first
-
       RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName", txtBoxUser.Text)
       If rBtnLocal.Checked Then
          RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", "")
@@ -194,10 +187,10 @@ Public Class frmAutoLogon
    Private Sub chkBoxAutologon_CheckedChanged(sender As Object, e As EventArgs) Handles chkBoxAutologon.CheckedChanged
       If chkBoxAutologon.Checked Then
          grpBoxAutoLoginSettings.Enabled = True
-         RegWriteBool(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon", True)
+         RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon", "1")
       Else
          grpBoxAutoLoginSettings.Enabled = False
-         RegWriteBool(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon", False)
+         RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon", "0")
       End If
    End Sub
 

@@ -1,7 +1,7 @@
 ﻿'--------------------------------------------------------------------------------------------------
 ' libReg - Registry functions
 '    © 2026 Remus Rigo
-'       v1.0 2026-04-25
+'       v1.0 2026-04-29
 '
 ' add Imports Microsoft.Win32
 '--------------------------------------------------------------------------------------------------
@@ -37,13 +37,12 @@ Public Module libReg
 	'-----------------------------------------------------------------------------------------------
 	' Read DWord | Integer
 	Public Function RegReadDWord(root As RegistryKey, path As String, name As String) As Integer
-		Dim r As Integer = -1
 		Using key As RegistryKey = root.OpenSubKey(path, False)
-			If key IsNot Nothing Then
-				r = Convert.ToInt32(key.GetValue(name, Nothing))
-			End If
+			If key Is Nothing Then Return -1
+			Dim val = key.GetValue(name, Nothing)
+			If val Is Nothing Then Return -1
+			Return Convert.ToInt32(val)
 		End Using
-		Return r
 	End Function
 
 	'-----------------------------------------------------------------------------------------------
@@ -62,20 +61,25 @@ Public Module libReg
 	'-----------------------------------------------------------------------------------------------
 	' Read SZ | String
 	Public Function RegReadSZ(root As RegistryKey, path As String, name As String) As String
-		Using key As RegistryKey = root.OpenSubKey(path, writable:=False)
-			If key Is Nothing Then
-				Return Nothing
-			End If
+		Try
+			' Open the key for reading
+			Using key As RegistryKey = root.OpenSubKey(path, False)
+				' Check if the KEY exists
+				If key Is Nothing Then Return String.Empty
 
-			Dim kind As RegistryValueKind = key.GetValueKind(name)
+				' Check if the VALUE exists
+				If key.GetValue(name) Is Nothing Then Return String.Empty
 
-			If kind = RegistryValueKind.String Then
-				Return CStr(key.GetValue(name, Nothing))
-			Else
-				' Optional: handle unexpected types
-				Return Nothing
-			End If
-		End Using
+				' Check if the type is actually a String (SZ) to avoid type mismatch
+				If key.GetValueKind(name) = RegistryValueKind.String Then
+					Return key.GetValue(name).ToString()
+				Else
+					Return String.Empty
+				End If
+			End Using
+		Catch ex As Exception
+			Return String.Empty
+		End Try
 	End Function
 
 	'-----------------------------------------------------------------------------------------------
@@ -108,18 +112,18 @@ Public Module libReg
 		Return False
 	End Function
 
-   '-----------------------------------------------------------------------------------------------
-   ' Delete value
-   Public Function RegDeleteValue(root As RegistryKey, path As String, name As String) As Boolean
-      Try
-         Using key As RegistryKey = root.OpenSubKey(path, True)
-            If key Is Nothing Then Return False ' Key does not exist
-            key.DeleteValue(name, False) ' False to avoid exception if value does not exist
-         End Using
-         Return True
-      Catch ex As Exception
-         Return False
-      End Try
-   End Function
+	'-----------------------------------------------------------------------------------------------
+	' Delete value
+	Public Function RegDeleteValue(root As RegistryKey, path As String, name As String) As Boolean
+		Try
+			Using key As RegistryKey = root.OpenSubKey(path, True)
+				If key.GetValue(name) Is Nothing Then Return False ' Key does not exist
+				key.DeleteValue(name, False) ' False to avoid exception if value does not exist
+			End Using
+			Return True
+		Catch ex As Exception
+			Return False
+		End Try
+	End Function
 
 End Module
