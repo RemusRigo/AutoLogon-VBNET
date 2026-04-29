@@ -22,6 +22,7 @@ Partial Class frmAutoLogon
    'Do not modify it using the code editor.
    <System.Diagnostics.DebuggerStepThrough()>
    Private Sub InitializeComponent()
+      components = New ComponentModel.Container()
       Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAutoLogon))
       StatusStrip = New StatusStrip()
       ToolStripStatusLabel = New ToolStripStatusLabel()
@@ -40,6 +41,7 @@ Partial Class frmAutoLogon
       txtBoxUser = New TextBox()
       lblUser = New Label()
       chkBoxAutologon = New CheckBox()
+      ToolTip = New ToolTip(components)
       StatusStrip.SuspendLayout()
       grpBoxAutoLoginSettings.SuspendLayout()
       grpBoxAutoLoginType.SuspendLayout()
@@ -257,5 +259,6 @@ Partial Class frmAutoLogon
    Friend WithEvents rBtnMSAccount As RadioButton
    Friend WithEvents rBtnLocal As RadioButton
    Friend WithEvents chkBoxAutologon As CheckBox
+   Friend WithEvents ToolTip As ToolTip
 
 End Class

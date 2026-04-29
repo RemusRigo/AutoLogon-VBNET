@@ -101,54 +101,60 @@ Public Class frmAutoLogon
    Private Sub frmAutoLogon_Load(sender As Object, e As EventArgs) Handles MyBase.Load
       'check if AutoLogon is enabled
       If RegValueExists(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon") Then
-         'if exists, check if it's set to 1 (enabled) or 0 (disabled)
+         ' if exists, check if it's set to 1 (enabled) or 0 (disabled)
          If RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "AutoAdminLogon") = "1" Then
             chkBoxAutologon.Checked = True
          Else
             chkBoxAutologon.Checked = False
          End If
       Else
-         'if value doesn't exist, AutoLogon is disabled
+         ' AutoLogon is disabled
          chkBoxAutologon.Checked = False
       End If
 
+      ' check DefaultUserName
       If RegValueExists(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName") Then
          txtBoxUser.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName")
       Else
          txtBoxUser.Text = Environment.UserName
       End If
 
+      ' get password from LSA
       txtBoxPass.Text = RetrieveLsaPassword()
 
+      ' check account type
       If RegValueExists(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName") Then
          txtBoxDomain.Text = RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName")
+         If RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName") = "" Then
+            rBtnLocal.Checked = True
+         ElseIf RegReadSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName") = "MicrosoftAccount" Then
+            rBtnMSAccount.Checked = True
+         Else
+            rBtnDomain.Checked = True
+         End If
       End If
    End Sub
 
    Private Sub rBtnLocal_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnLocal.CheckedChanged
       If rBtnLocal.Checked Then
+         ToolTip.SetToolTip(txtBoxUser, "Username")
          txtBoxDomain.Text = ""
       End If
    End Sub
 
    Private Sub rBtnMSAccount_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnMSAccount.CheckedChanged
       If rBtnMSAccount.Checked Then
-         txtBoxUser.Text = "MicrosoftAccount\your@email.com"
+         ToolTip.SetToolTip(txtBoxUser, "MicrosoftAccount\your@email.com")
          txtBoxDomain.Text = "MicrosoftAccount"
-         ' use password, not PIN
-         If RegValueExists(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless") Then
-            RegWriteDWord(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless", 0)
-         End If
-         If RegValueExists(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion") Then
-            RegWriteDWord(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion", 0)
-         End If
       End If
    End Sub
 
    Private Sub rBtnDomain_CheckedChanged(sender As Object, e As EventArgs) Handles rBtnDomain.CheckedChanged
-
       If rBtnDomain.Checked Then
-         txtBoxDomain.Text = Environment.UserDomainName
+         ToolTip.SetToolTip(txtBoxUser, "DomainName\yourusername")
+         If Environment.MachineName <> Environment.UserDomainName Then
+            txtBoxDomain.Text = Environment.UserDomainName
+         End If
       End If
    End Sub
 
@@ -170,13 +176,38 @@ Public Class frmAutoLogon
    End Sub
 
    Private Sub btnSet_Click(sender As Object, e As EventArgs) Handles btnSet.Click
+      'user name
       RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultUserName", txtBoxUser.Text)
+
+      ' password
+      StoreLsaPassword(txtBoxPass.Text)
+
+      ' local account
       If rBtnLocal.Checked Then
          RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", "")
-      Else
+      End If
+
+      ' Microsoft account
+      If rBtnMSAccount.Checked Then
+         RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", "MicrosoftAccount")
+
+         ' use password, not PIN
+         If RegValueExists(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless") Then
+            RegWriteDWord(Registry.LocalMachine, "Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\TestHooks", "Passwordless", 0)
+         End If
+         If RegValueExists(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion") Then
+            RegWriteDWord(Registry.LocalMachine, "Software\Microsoft\Windows NT\CurrentVersion\PasswordLess\Device", "DevicePasswordLessBuildVersion", 0)
+         End If
+         ' Disable Windows Hello sign-in (allows autologon to take over)
+         RegWriteDWord(Registry.LocalMachine, "SOFTWARE\Microsoft\PolicyManager\default\Settings", "AllowSignInOptions", 0)
+
+      End If
+
+      ' domain account
+      If rBtnDomain.Checked Then
          RegWriteSZ(Registry.LocalMachine, REG_WINLOGON, "DefaultDomainName", txtBoxDomain.Text)
       End If
-      StoreLsaPassword(txtBoxPass.Text)
+
       ToolStripStatusLabel.Text = "Configuration set"
    End Sub
 
