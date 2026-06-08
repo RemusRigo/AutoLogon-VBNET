@@ -13,7 +13,7 @@ A Windows AutoLogon utility
 
 ## Installation
 
-You must install .NET Runtime 10 x64 and then just run AutoLogon.exe
+You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 & x86)
 
 
 
