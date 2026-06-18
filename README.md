@@ -17,6 +17,13 @@ You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 & x86)
 
 
 
+## Instructions
+Local Account ![Local Account](Screenshots/local.png)
+Microsoft Account ![Microsoft Account](Screenshots/microsoft.png)
+Domain Account ![Domain Account](Screenshots/domain.png)
+
+
+
 ## Features
 
 * Require admin rights
@@ -25,6 +32,7 @@ You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 & x86)
 * Auto logon for domain users
 * Click on Password label to show/hide password
 * Right-Click on Caption to show About dialog box
+* Adaptive Layout
 
 
 
@@ -36,6 +44,7 @@ You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 & x86)
 
 ## Roadmap
 
+* 2026-06-18: Add: Adaptive layout (show/hide options & form size changes)
 * 2026-04-29: Fix: changed the behavior of the radio buttons (Local/MS Account/Domain accounts)
 * 2026-04-29: Fix: revised logic in several areas
 * 2026-04-25: Fix: logic in check if AutoLogon is enabled (also changed from RadioButton to CheckBox)
