@@ -9,7 +9,7 @@
       <StartupObject>Sub Main</StartupObject>
       <UseWindowsForms>true</UseWindowsForms>
       <TargetFramework>net10.0-windows</TargetFramework>
-      <Platforms>AnyCPU;x64;x86</Platforms>
+      <Platforms>x64;x86</Platforms>
   </PropertyGroup>
   
 <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
