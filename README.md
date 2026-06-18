@@ -18,10 +18,9 @@ You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 & x86)
 
 
 ## Instructions
-Local Account:
-![Local Account](Screenshots/local.png)
+Local Account:<br>![Local Account](Screenshots/local.png)
 
-Microsoft Account:
+Microsoft Account:<br>
 ![Microsoft Account](Screenshots/microsoft.png)
 
 Domain Account:
