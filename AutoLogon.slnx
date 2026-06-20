@@ -4,8 +4,12 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="AutoLogon.vbproj">
+  <Project Path="AutoLogon/AutoLogon.vbproj">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="AutoLogonXP/AutoLogonXP.vbproj" Id="b786f3a5-0688-4831-ab80-2e8753759ba7">
+    <Platform Solution="Release|x64" Project="x64" />
+    <Platform Solution="Release|x86" Project="x86" />
   </Project>
 </Solution>

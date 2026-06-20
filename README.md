@@ -13,17 +13,17 @@ A Windows AutoLogon utility
 
 ## Installation
 
-You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 & x86)
+You must install .NET Runtime 10 and then just run AutoLogon.exe (x64 \& x86)
 
 
 
 ## Instructions
 
-Local Account:<br>![Local Account](Screenshots/local.png)
+Local Account:<br>!\[Local Account](Screenshots/local.png)
 
-Microsoft Account:<br>![Microsoft Account](Screenshots/microsoft.png)
+Microsoft Account:<br>!\[Microsoft Account](Screenshots/microsoft.png)
 
-Domain Account:<br>![Domain Account](Screenshots/domain.png)
+Domain Account:<br>!\[Domain Account](Screenshots/domain.png)
 
 
 
@@ -36,18 +36,20 @@ Domain Account:<br>![Domain Account](Screenshots/domain.png)
 * Click on Password label to show/hide password
 * Right-Click on Caption to show About dialog box
 * Adaptive Layout
-
+* Multi target: 3.5, 4.8, 8.0, 10.0
 
 
 ## Statistics
 
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/RemusRigo/AutoLogon-VBNET/total)
+!\[GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/RemusRigo/AutoLogon-VBNET/total)
 
 
 
 ## Roadmap
 
-* 2026-06-18: Add: Adaptive layout (show/hide options & form size changes)
+* 2026-06-20: Add: Multi targets: Separate project for .NET 3.5
+* 2026-06-19: Add: Multi targets: .NET 4.8, 8.0, 10.0
+* 2026-06-18: Add: Adaptive layout (show/hide options \& form size changes)
 * 2026-04-29: Fix: changed the behavior of the radio buttons (Local/MS Account/Domain accounts)
 * 2026-04-29: Fix: revised logic in several areas
 * 2026-04-25: Fix: logic in check if AutoLogon is enabled (also changed from RadioButton to CheckBox)
